@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+    <title> Objects</title>
+    <style>
+      div{
+        background-color: rgb(117, 117, 255);
+        width:fit-content;
+        height: auto;
+        padding: 30px;
+        border-radius: 20px;
+      }
+      button{
+        background-color: black;
+        color: blueviolet;
+        width: 120px;
+        height: 40px;
+        border-radius: 40%;
+        margin: 5px;
+      }
+      .reset{
+        align-self: center;
+        display: block;
+        margin-top: 30px;
+        margin-left: 140px;
+      }
+      p{
+        font-size: 24px;
+        color: rgb(0, 0, 0);
+        margin-left: 20px;
+        margin-bottom: 40px;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div>
+      <p>Rock Paper Scissors Make your pick</p>
+      <button
+        onclick="
+        RPS_game.wynikGry('Rock', RPS_game.computerMove());
+
+        "
+        >Rock
+      </button>
+
+      <button
+        onclick="
+        RPS_game.wynikGry('Paper', RPS_game.computerMove());
+        "
+        >Paper
+      </button>
+
+      <button
+        onclick="
+        RPS_game.wynikGry('Scissors', RPS_game.computerMove());
+        "
+        >Scissors
+      </button>
+
+      <button class="reset"
+        onclick="
+        score.win = score.loss = score.tie = 0;
+        alert(`Score reseted\nScore:\n Win: ${score.win} Losse: ${score.loss} Tie: ${score.tie}`);
+        "
+        >Reset Score
+      </button>
+    </div>
+
+    <script>
+      let computerPick = ''
+      let score = JSON.parse(localStorage.getItem('score'));
+
+      if (!score) {
+        score = {
+          win: 0,
+          loss: 0,
+          tie: 0
+        };
+      }
+
+      const RPS_game = {
+
+        computerMove: function computerMove(){
+
+          const moveMath = Math.round(Math.random() * 1000) / 1000;
+          let move
+
+          if(moveMath < 1/3 ){
+            move = 'Rock';
+          } else if(moveMath < 2/3){
+            move = 'Paper';
+          } else{
+            move = 'Scissors';
+          }
+          computerPick = move;
+          console.log(moveMath);
+          console.log(move);
+          return move;
+        }
+      ,
+        wynikGry: function wynikGry(player, computer){
+         let result = '';
+          if(player === computer){
+            score.tie ++;
+            result = 'Tie'
+
+          } else if(player === 'Rock' && computer === 'Scissors' ||
+                    player === 'Paper' && computer === 'Rock' ||
+                    player === 'Scissors' && computer === 'Paper' ){
+            score.win ++;
+            result = 'Win';
+            
+          } else{
+            score.loss ++;
+            result = 'Losse'
+
+          }
+          alert(`You picked:              - - - -   ${player}\nComputer picked:    - - - -   ${computer}\nAnd you:                  - - - -   ${result}\n\nScore:\n Win: ${score.win} Losse: ${score.loss} Tie: ${score.tie}`)
+          localStorage.setItem('score', JSON.stringify(score));
+        }
+      }
+
+      console.log(score);
+      
+
+    </script>
+  </body>
+
+</html>
