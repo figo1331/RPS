@@ -1,17 +1,17 @@
 <!DOCTYPE html>
 <html>
-
   <head>
-    <title> Objects</title>
+    <title>Rock Paper Scissors</title>
     <style>
-      div{
+      div {
         background-color: rgb(117, 117, 255);
-        width:fit-content;
+        width: fit-content;
         height: auto;
         padding: 30px;
         border-radius: 20px;
       }
-      button{
+
+      button {
         background-color: black;
         color: blueviolet;
         width: 120px;
@@ -19,17 +19,22 @@
         border-radius: 40%;
         margin: 5px;
       }
-      .reset{
+
+      .reset {
         align-self: center;
         display: block;
         margin-top: 30px;
         margin-left: 140px;
+        margin-bottom: 20px;
       }
-      p{
+
+      p {
         font-size: 24px;
         color: rgb(0, 0, 0);
-        margin-left: 20px;
-        margin-bottom: 40px;
+        margin: 4px;
+      }
+      .margin {
+        margin-bottom: 10px;
       }
     </style>
   </head>
@@ -37,95 +42,123 @@
   <body>
     <div>
       <p>Rock Paper Scissors Make your pick</p>
-      <button
-        onclick="
-        RPS_game.wynikGry('Rock', RPS_game.computerMove());
 
-        "
-        >Rock
-      </button>
+      <p>You picked: <span style="color: rgb(255, 0, 0);" id="playerPick"></span></p>
+      <p>Computer picked: <span style="color: rgb(255, 0, 0);" id="computerPick"></span></p>
+      <p class="margin">You: <span style="color: rgb(3, 252, 44)" id="result"></span></p>
 
-      <button
-        onclick="
-        RPS_game.wynikGry('Paper', RPS_game.computerMove());
-        "
-        >Paper
-      </button>
+      <button id="rockButton">Rock</button>
+      <button id="paperButton">Paper</button>
+      <button id="scissorsButton">Scissors</button>
 
-      <button
-        onclick="
-        RPS_game.wynikGry('Scissors', RPS_game.computerMove());
-        "
-        >Scissors
-      </button>
+      <button class="reset" id="resetButton">Reset Score</button>
 
-      <button class="reset"
-        onclick="
-        score.win = score.loss = score.tie = 0;
-        alert(`Score reseted\nScore:\n Win: ${score.win} Losse: ${score.loss} Tie: ${score.tie}`);
-        "
-        >Reset Score
-      </button>
+      <p>
+        Wins: <span id="win"></span>
+        Losses: <span id="loss"></span>
+        Tie: <span id="tie"></span>
+      </p>
     </div>
 
     <script>
-      let computerPick = ''
-      let score = JSON.parse(localStorage.getItem('score'));
+      const score = JSON.parse(localStorage.getItem('score')) || {
+        win: 0,
+        loss: 0,
+        tie: 0
+      };
 
-      if (!score) {
-        score = {
-          win: 0,
-          loss: 0,
-          tie: 0
-        };
+      const playerPickElement = document.getElementById('playerPick');
+      const computerPickElement = document.getElementById('computerPick');
+      const resultElement = document.getElementById('result');
+
+      const winElement = document.getElementById('win');
+      const lossElement = document.getElementById('loss');
+      const tieElement = document.getElementById('tie');
+
+      const rockButton = document.getElementById('rockButton');
+      const paperButton = document.getElementById('paperButton');
+      const scissorsButton = document.getElementById('scissorsButton');
+      const resetButton = document.getElementById('resetButton');
+
+      function updateScoreDisplay() {
+        winElement.textContent = score.win;
+        lossElement.textContent = score.loss;
+        tieElement.textContent = score.tie;
       }
 
-      const RPS_game = {
+      function updateGameDisplay(player, computer, result) {
+        playerPickElement.textContent = player;
+        computerPickElement.textContent = computer;
+        resultElement.textContent = result;
+      }
 
-        computerMove: function computerMove(){
+      function saveScore() {
+        localStorage.setItem('score', JSON.stringify(score));
+      }
 
-          const moveMath = Math.round(Math.random() * 1000) / 1000;
-          let move
+      function getComputerMove() {
+        const randomNumber = Math.random();
 
-          if(moveMath < 1/3 ){
-            move = 'Rock';
-          } else if(moveMath < 2/3){
-            move = 'Paper';
-          } else{
-            move = 'Scissors';
-          }
-          computerPick = move;
-          console.log(moveMath);
-          console.log(move);
-          return move;
-        }
-      ,
-        wynikGry: function wynikGry(player, computer){
-         let result = '';
-          if(player === computer){
-            score.tie ++;
-            result = 'Tie'
-
-          } else if(player === 'Rock' && computer === 'Scissors' ||
-                    player === 'Paper' && computer === 'Rock' ||
-                    player === 'Scissors' && computer === 'Paper' ){
-            score.win ++;
-            result = 'Win';
-            
-          } else{
-            score.loss ++;
-            result = 'Losse'
-
-          }
-          alert(`You picked:              - - - -   ${player}\nComputer picked:    - - - -   ${computer}\nAnd you:                  - - - -   ${result}\n\nScore:\n Win: ${score.win} Losse: ${score.loss} Tie: ${score.tie}`)
-          localStorage.setItem('score', JSON.stringify(score));
+        if (randomNumber < 1 / 3) {
+          return 'Rock';
+        } else if (randomNumber < 2 / 3) {
+          return 'Paper';
+        } else {
+          return 'Scissors';
         }
       }
 
-      console.log(score);
-      
+      function playGame(playerMove) {
+        const computerMove = getComputerMove();
+        let result = '';
 
+        if (playerMove === computerMove) {
+          score.tie++;
+          result = 'Tie';
+        } else if (
+          (playerMove === 'Rock' && computerMove === 'Scissors') ||
+          (playerMove === 'Paper' && computerMove === 'Rock') ||
+          (playerMove === 'Scissors' && computerMove === 'Paper')
+        ) {
+          score.win++;
+          result = 'Win';
+        } else {
+          score.loss++;
+          result = 'Loss';
+        }
+
+        saveScore();
+        updateScoreDisplay();
+        updateGameDisplay(playerMove, computerMove, result);
+      }
+
+      function resetScore() {
+        score.win = 0;
+        score.loss = 0;
+        score.tie = 0;
+
+        localStorage.removeItem('score');
+        updateScoreDisplay();
+        updateGameDisplay('', '', '');
+      }
+
+      rockButton.addEventListener('click', function () {
+        playGame('Rock');
+      });
+
+      paperButton.addEventListener('click', function () {
+        playGame('Paper');
+      });
+
+      scissorsButton.addEventListener('click', function () {
+        playGame('Scissors');
+      });
+
+      resetButton.addEventListener('click', function () {
+        resetScore();
+      });
+
+      updateScoreDisplay();
     </script>
   </body>
-
 </html>
