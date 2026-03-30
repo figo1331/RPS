@@ -4,7 +4,7 @@
     <title>Rock Paper Scissors</title>
     <style>
       div {
-        background-color: rgb(82, 82, 234);
+        background-color: rgb(37, 37, 55);
         width: fit-content;
         height: auto;
         padding: 30px;
@@ -32,7 +32,7 @@
 
       p {
         font-size: 24px;
-        color: rgb(0, 0, 0);
+        color: aqua;
         margin: 4px;
       }
       .margin {
@@ -88,9 +88,6 @@
       }
 
       function updateGameDisplay(player, computer, result) {
-        playerPickElement.innerHTML = player + `<img src="Grafika/${player}.png" alt="${player}" height="50px" width="50px">`;
-        computerPickElement.innerHTML = computer + `<img src="Grafika/${computer}.png" alt="${computer}" height="50px" width="50px">`;
-        resultElement.textContent = result;
         if (result === 'Win') {
           resultElement.style.color = 'green';
         } else if (result === 'Loss') {
@@ -98,6 +95,28 @@
         } else {
           resultElement.style.color = 'orange';
         }
+
+        if(player === 'Rock') {
+          playerPickElement.style.color = 'brown';
+        } else if(player === 'Paper') {
+          playerPickElement.style.color = 'white';
+        } else if(player === 'Scissors') {
+          playerPickElement.style.color = 'gray';
+        }
+
+        if(computer === 'Rock') {
+          computerPickElement.style.color = 'brown';
+        } else if(computer === 'Paper') {
+          computerPickElement.style.color = 'white';
+        } else if(computer === 'Scissors') {
+          computerPickElement.style.color = 'gray';
+        }
+
+        playerPickElement.innerHTML = player + `<img src="Grafika/${player}.png" alt="${player}" height="50px" width="50px">`;
+        computerPickElement.innerHTML = computer + `<img src="Grafika/${computer}.png" alt="${computer}" height="50px" width="50px">`;
+        resultElement.textContent = result;
+       
+
       }
 
       function saveScore() {
