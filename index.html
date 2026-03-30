@@ -52,9 +52,6 @@
       <button id="rockButton">Rock</button>
       <button id="paperButton">Paper</button>
       <button id="scissorsButton">Scissors</button>
-      <!-- <img src="grafika/Kamien.png" alt="Rock">
-      <img src="grafika/Papier.png" alt="Paper">
-      <img src="grafika/Nozyce.png" alt="Nożyce"> -->
       <button class="reset" id="resetButton">Reset Score</button>
       
       <p>
@@ -91,8 +88,8 @@
       }
 
       function updateGameDisplay(player, computer, result) {
-        playerPickElement.innerHTML = player + `<img src="grafika/${player}.png" alt="${player}" height="50px" width="50px">`;
-        computerPickElement.innerHTML = computer + `<img src="grafika/${computer}.png" alt="${computer}" height="50px" width="50px">`;
+        playerPickElement.innerHTML = player + `<img src="Grafika/${player}.png" alt="${player}" height="50px" width="50px">`;
+        computerPickElement.innerHTML = computer + `<img src="Grafika/${computer}.png" alt="${computer}" height="50px" width="50px">`;
         resultElement.textContent = result;
         if (result === 'Win') {
           resultElement.style.color = 'green';
@@ -155,7 +152,6 @@
 
       rockButton.addEventListener('click', function () {
         playGame('Rock');
-        console.log(win.textContent);
       });
 
       paperButton.addEventListener('click', function () {
