@@ -52,9 +52,11 @@
       <button id="rockButton">Rock</button>
       <button id="paperButton">Paper</button>
       <button id="scissorsButton">Scissors</button>
-
+      <!-- <img src="grafika/Kamien.png" alt="Rock">
+      <img src="grafika/Papier.png" alt="Paper">
+      <img src="grafika/Nozyce.png" alt="Nożyce"> -->
       <button class="reset" id="resetButton">Reset Score</button>
-
+      
       <p>
         Wins: <span id="win"></span>
         Losses: <span id="loss"></span>
@@ -89,9 +91,16 @@
       }
 
       function updateGameDisplay(player, computer, result) {
-        playerPickElement.textContent = player;
-        computerPickElement.textContent = computer;
+        playerPickElement.innerHTML = player + `<img src="grafika/${player}.png" alt="${player}" height="50px" width="50px">`;
+        computerPickElement.innerHTML = computer + `<img src="grafika/${computer}.png" alt="${computer}" height="50px" width="50px">`;
         resultElement.textContent = result;
+        if (result === 'Win') {
+          resultElement.style.color = 'green';
+        } else if (result === 'Loss') {
+          resultElement.style.color = 'red';
+        } else {
+          resultElement.style.color = 'orange';
+        }
       }
 
       function saveScore() {
@@ -146,6 +155,7 @@
 
       rockButton.addEventListener('click', function () {
         playGame('Rock');
+        console.log(win.textContent);
       });
 
       paperButton.addEventListener('click', function () {
